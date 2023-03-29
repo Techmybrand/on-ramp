@@ -3,8 +3,6 @@
 .header {
   @include flex(space-between, center, nowrap);
   padding: 2.7rem 6.5rem;
-  position: fixed;
-  top: 0;
   width: 100%;
   background-color: $col-primary;
   transition: $all-transition;

@@ -30,7 +30,7 @@ const InputField = ({
   disabled,
   required,
   min,
-  max
+  max,
 }: Props) => {
   const [inputType, setInputType] = useState<string>(type)
   const handleShowPassword = () => {

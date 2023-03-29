@@ -2,68 +2,54 @@ import React, { useState, useEffect, useCallback } from 'react'
 import { Button, InputField, Modal } from '@/shared'
 import styles from './TokenInputContainer.module.scss'
 import Image from 'next/legacy/image'
+import { formatLargeNum, formatNumber } from '@/utils'
+import { Currencies, TokenInputValue } from '@/types'
 
 interface Props {
   label?: string
   onChange?: (e: any) => void
   onBlur?: (e: any) => void
   onFocus?: (e: any) => void
-  value?: string | number
-  setCountryCode?: (e: string | number) => void
+  value: TokenInputValue
+  setValue: (e?: any) => void
+  options: Currencies[]
+  convertedValue?: number
+  disabled?: boolean
 }
 
-const countries = [
-  {
-    flag: '/svgs/ngn.svg',
-    countryCode: 'ALA',
-    callingCode: '+358',
-    name: 'Åland Islands',
-    currency: 'Naira',
-  },
-  {
-    flag: 'https://flagcdn.com/al.svg',
-    countryCode: 'ALB',
-    callingCode: '+355',
-    name: 'Albania',
-    currency: 'ALL',
-  },
-  {
-    flag: 'https://flagcdn.com/dz.svg',
-    countryCode: 'DZA',
-    callingCode: '+213',
-    name: 'Algeria',
-    currency: 'DZD',
-  },
-]
-
-const TokenInputContainer = ({ label, onChange, onBlur, onFocus, value, setCountryCode }: Props) => {
+const TokenInputContainer = ({
+  label,
+  onChange,
+  onBlur,
+  onFocus,
+  value,
+  setValue,
+  options,
+  convertedValue,
+  disabled = false,
+}: Props) => {
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [selectedOptionIndex, setSelectedOptionIndex] = useState<number>(0)
-  const toggling = (event: React.MouseEvent<HTMLDivElement>) => {
-    setIsOpen(!isOpen)
-    event.stopPropagation()
-  }
   const [searchTerm, setSearchTerm] = useState<string>('')
-  const [countryList, setCountryList] = useState<any>(countries)
-
+  const [tokenList, setTokenList] = useState<any[]>(options)
   const searchResult = useCallback(
     (e: any) => {
       setSearchTerm(e.target.value)
-      const results = countries.filter((country) => country.name.toLowerCase().includes(searchTerm.toLowerCase()))
-      setCountryList(results)
+      const results = options.filter((currency) => currency.name.toLowerCase().includes(searchTerm.toLowerCase()))
+      setTokenList(results)
     },
-    [searchTerm],
+    [searchTerm, options],
   )
   const onOptionClicked = (selectedIndex: number) => () => {
     setSelectedOptionIndex(selectedIndex)
-    // setCountryCode!(countryList[selectedIndex].callingCode)
+    // setValue!(tokenList[selectedIndex].callingCode)
     setIsOpen(false)
   }
   useEffect(() => {
-    if (countryList[selectedOptionIndex]) {
-      //   setCountryCode!(countryList[selectedOptionIndex].callingCode)
+    if (tokenList[selectedOptionIndex]) {
+      //   setValue!(tokenList[selectedOptionIndex].symbol)
     }
-  }, [selectedOptionIndex])
+  }, [selectedOptionIndex, setValue, tokenList])
 
   useEffect(() => {
     const handleClickOutside = () => {
@@ -85,31 +71,49 @@ const TokenInputContainer = ({ label, onChange, onBlur, onFocus, value, setCount
       <div className={styles.select_head}>
         <div className={`${styles.input}`}>
           <div className={styles.input_wrapper}>
-            <input
-              className={styles.input_field}
-              type={'number'}
-              onChange={onChange}
-              onBlur={onBlur}
-              onFocus={onFocus}
-              value={value}
-              placeholder="1000"
-            />
+            <div className={styles.input_container}>
+              {disabled ? (
+                <div className={styles.input_text}>
+                  <h4>{formatNumber(convertedValue!)}</h4>
+                </div>
+              ) : (
+                <input
+                  className={styles.input_field}
+                  type={'number'}
+                  onChange={(e: any) => setValue({ ...value, amount: e.target.value })}
+                  onBlur={onBlur}
+                  onFocus={onFocus}
+                  value={value.amount}
+                  placeholder="1000"
+                />
+              )}
+            </div>
             <div className={styles.input_text}>
               <p>
-                {countryList[selectedOptionIndex] ? countryList[selectedOptionIndex].currency : ''} <span>($793)</span>
+                {tokenList[selectedOptionIndex] ? tokenList[selectedOptionIndex].name : ''}{' '}
+                {value.amount && <span>(${formatLargeNum(Number(value.amount) / 750)})</span>}
               </p>
             </div>
           </div>
         </div>
         <div className={styles.container}>
-          <Button className={styles.select_header} buttonType="transparent" onClick={toggling}>
+          <Button
+            className={styles.select_header}
+            buttonType="transparent"
+            onClick={(e: any) => {
+              setIsOpen(true)
+              e.stopPropagation()
+            }}
+          >
             <div className={styles.select_smallRow}>
               <div className={styles.icon}>
-                {countryList[selectedOptionIndex] && (
-                  <Image src={countryList[selectedOptionIndex].flag} alt="" layout="fill" />
+                {tokenList[selectedOptionIndex] && (
+                  <Image src={tokenList[selectedOptionIndex].icon} alt="" layout="fill" />
                 )}
               </div>
-              <p>{countryList[selectedOptionIndex] ? countryList[selectedOptionIndex].countryCode : ''}</p>
+              <p style={{ textTransform: 'uppercase' }}>
+                {tokenList[selectedOptionIndex] ? tokenList[selectedOptionIndex].symbol : ''}
+              </p>
             </div>
             <div className={styles.select_icon}>
               <Image src="/svgs/drop-down.svg" layout="fill" alt="" />
@@ -127,14 +131,14 @@ const TokenInputContainer = ({ label, onChange, onBlur, onFocus, value, setCount
                   />
                 </div>
                 <ul className={styles.select_listContainer}>
-                  {countryList.map(({ countryCode, flag }: any, index: number) => {
+                  {tokenList.map(({ symbol, icon }: any, index: number) => {
                     return index !== selectedOptionIndex ? (
                       <li onClick={onOptionClicked(index)} key={index} className={styles.select_listItem}>
                         <Button buttonType="transparent" className={styles.select_row}>
                           <div className={styles.icon}>
-                            <Image src={flag} alt="" layout="fill" />
+                            <Image src={icon} alt="" layout="fill" />
                           </div>
-                          <p>{countryCode}</p>
+                          <p>{symbol}</p>
                         </Button>
                       </li>
                     ) : null

@@ -1,3 +1,4 @@
+import { formatLargeNum, formatNumber } from '@/utils'
 import Image from 'next/legacy/image'
 import React from 'react'
 import styles from './DetailContainer.module.scss'
@@ -32,7 +33,7 @@ const DetailContainer = ({ title, value, description, prefix, suffix, className 
       <div className={`${styles.text} ${className}`}>
         <h3>
           {prefix}
-          {value}
+          {typeof value === 'number' ? formatNumber(value) : value}
           {suffix}
         </h3>
       </div>

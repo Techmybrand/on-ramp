@@ -1,3 +1,4 @@
-import { navLinks } from './navLinks'
+import { currencies, tokens } from './currencies.mock'
+import { navLinks } from './navLinks.mock'
 
-export { navLinks }
+export { navLinks, currencies, tokens }

@@ -3,9 +3,22 @@
 .card {
   width: 63.5rem;
   border: 0.6rem solid $col-blue-100;
-  padding: 2.8rem 5rem;
+  //   padding: 2.8rem 5rem;
   position: relative;
   background-color: $col-white;
+  .header {
+    padding: 2.8rem 5rem;
+    border-bottom: 0.1rem solid #f7f9df;
+    @include flex(flex-start, center);
+    .back_button {
+      position: relative;
+      width: 2rem;
+      height: 2rem;
+      margin-right: 2.5rem;
+      rotate: 90deg;
+      cursor: pointer;
+    }
+  }
   .menu_container {
     position: absolute;
     top: 2.8rem;
@@ -16,6 +29,9 @@
       height: 3.2rem;
       cursor: pointer;
     }
+  }
+  .body {
+    padding: 2.8rem 5rem;
   }
   .title,
   .text {
@@ -30,10 +46,20 @@
     }
   }
   .text {
+    h5 {
+      @extend %text-16;
+      font-family: $avenir-900;
+      color: #8c9708;
+      cursor: pointer;
+    }
     p {
       @extend %text-20;
       font-family: $font-mono;
       font-weight: 700;
+    }
+    span {
+      @extend %text-16;
+      font-family: $matter-500;
     }
   }
   .paymentType_container {
@@ -72,10 +98,39 @@
       cursor: pointer;
     }
   }
+  .input_container {
+    margin-bottom: 3.2rem;
+  }
+  .center {
+    display: grid;
+    place-items: center;
+    .title {
+      h3 {
+        font-family: $font-mono;
+        @extend %title-24;
+        text-align: center;
+      }
+    }
+    .text {
+      max-width: 40.8rem;
+      p {
+        font-family: $matter-500;
+        @extend %text-16;
+        color: $col-text-secondary;
+        text-align: center;
+      }
+    }
+  }
+  .confirm_image {
+    position: relative;
+    width: 22rem;
+    height: 20rem;
+  }
   .button {
     width: 100%;
     background-color: #cdee2d;
     @include flex(center, center);
+    margin-top: 3.2rem;
     .icon {
       position: relative;
       width: 2.4rem;

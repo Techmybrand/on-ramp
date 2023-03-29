@@ -10,9 +10,9 @@
 .input_label {
   font-size: 1.6rem;
   line-height: 2.2rem;
-  color: $col-white;
-  font-family: $matter-900;
-  font-weight: 900;
+  color: $primary-text-color;
+  font-family: $matter-500;
+  font-weight: 500;
 }
 
 .input_wrapper {
@@ -21,15 +21,11 @@
   height: 6.1rem;
   padding: 1.8rem;
   column-gap: 1rem;
-  background-color: rgba(17, 29, 46, 0.5);
-  border: 0.1rem solid rgba(19, 34, 54, 1);
+  background-color: $col-secondary;
+  border: 0.1rem solid $col-secondary;
   border-radius: 0.4rem;
   transition: all 0.1s ease-in;
   @include flex(flex-start, center, row nowrap);
-  &:focus-within {
-    transition: all 0.3s linear;
-    border-color: rgba(19, 34, 54, 1);
-  }
   @include screenMax('ssm-mobile') {
     height: 5rem;
     padding: 1rem 1.8rem;
@@ -48,22 +44,33 @@
   flex-grow: 1;
   height: 100%;
   @extend %text-20;
-  font-family: $matter-900;
-  width: 12rem;
+  line-height: 2.2rem;
+  font-family: $matter-700;
+  //   width: 12rem;
+  color: $col-blue-90;
   &::placeholder {
     @extend %text-20;
-    font-family: $matter-900;
-    color: $col-text-secondary;
+    line-height: 2.2rem;
+    font-family: $matter-700;
+    color: rgba($col-blue-90, 0.7);
   }
 }
 
 .input_text {
-  margin-bottom: 0.5rem;
   p {
     @extend %text-20;
-    font-family: $matter-900;
-    color: $col-white;
+    line-height: 2.2rem;
+    font-family: $avenir-900;
+    font-weight: 900;
+    color: $primary-text-color;
   }
+  span {
+    @extend %text-18;
+    line-height: 2.2rem;
+    font-family: $matter-400;
+    color: $col-blue-90;
+  }
+  //   @include flex(flex-start, center);
 }
 
 .icon {

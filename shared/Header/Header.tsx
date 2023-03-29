@@ -36,7 +36,7 @@ const Header = (): ReactElement => {
           </ul>
         </nav>
         <a href="#" target="_blank" rel="noreferrer">
-          <Button type="primary" className={styles.button}>
+          <Button buttonType="primary" className={styles.button}>
             <div className={styles.icon}>
               <Image src="/svgs/wallet-yellow.svg" layout="fill" alt="" />
             </div>

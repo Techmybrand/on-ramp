@@ -8,5 +8,18 @@ import InputField from './inputField/InputField'
 import TokenInputContainer from './tokenInputContainer/TokenInputContainer'
 import Modal from './modal/Modal'
 import DetailContainer from './detailContainer/DetailContainer'
+import CardInputField from './cardInputField/CardInputField'
 
-export { Nprogress, Button, Logo, Header, Seo, Card, InputField, TokenInputContainer, Modal, DetailContainer }
+export {
+  Nprogress,
+  Button,
+  Logo,
+  Header,
+  Seo,
+  Card,
+  InputField,
+  TokenInputContainer,
+  Modal,
+  DetailContainer,
+  CardInputField,
+}

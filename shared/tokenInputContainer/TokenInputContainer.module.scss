@@ -148,12 +148,15 @@
   border-radius: 0.4rem;
   transition: all 0.1s ease-in;
   @include flex(flex-start, center);
+  .input_container {
+    width: 10rem;
+    height: 100%;
+  }
   &:focus-within {
     transition: all 0.3s linear;
     border-color: $col-secondary;
   }
   @include screenMax('ssm-mobile') {
-    // height: 5rem;
     padding: 1rem 1.8rem;
   }
 }
@@ -164,7 +167,7 @@
   @extend %text-20;
   line-height: 2.2rem;
   font-family: $matter-700;
-  //   width: 12rem;
+  width: 100%;
   color: $col-blue-90;
   &::placeholder {
     @extend %text-20;
@@ -175,12 +178,17 @@
 }
 
 .input_text {
-  p {
+  p,
+  h4 {
     @extend %text-20;
     line-height: 2.2rem;
     font-family: $avenir-900;
     font-weight: 900;
     color: $primary-text-color;
+    text-transform: capitalize;
+  }
+  h4 {
+    color: $col-blue-90;
   }
   span {
     @extend %text-18;
