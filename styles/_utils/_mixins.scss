@@ -1,0 +1,55 @@
+@import '../_utils/responsive';
+
+// centered container
+%center {
+  display: grid;
+  place-items: center;
+}
+
+// flexbox
+@mixin flex($justify: flex-start, $align: flex-start, $flow: row wrap) {
+  flex-flow: $flow;
+  display: flex;
+  justify-content: $justify;
+  align-items: $align;
+}
+
+// grid
+@mixin grid($columns: repeat(auto-fit, minmax(20%, 1fr)), $column-gap: 1rem, $row-gap: 1rem) {
+  display: grid;
+  grid-template-columns: $columns;
+  column-gap: $column-gap;
+  row-gap: $row-gap;
+}
+
+@mixin screenMin($breakpoint) {
+  // If the key exists in the map
+  @if map-has-key($breakpoints, $breakpoint) {
+    // Prints a media query based on the value
+    @media (min-width: map-get($breakpoints, $breakpoint)) {
+      @content;
+    }
+  }
+
+  // If the key doesn't exist in the map
+  @else {
+    @warn "Unfortunately, no value could be retrieved from `#{$breakpoint}`. "
+      + "Available breakpoints are: #{map-keys($breakpoints)}.";
+  }
+}
+
+@mixin screenMax($breakpoint) {
+  // If the key exists in the map
+  @if map-has-key($breakpoints, $breakpoint) {
+    // Prints a media query based on the value
+    @media (max-width: map-get($breakpoints, $breakpoint)) {
+      @content;
+    }
+  }
+
+  // If the key doesn't exist in the map
+  @else {
+    @warn "Unfortunately, no value could be retrieved from `#{$breakpoint}`. "
+      + "Available breakpoints are: #{map-keys($breakpoints)}.";
+  }
+}

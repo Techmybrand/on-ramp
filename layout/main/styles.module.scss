@@ -1,0 +1,11 @@
+@import '@/styles/imports';
+
+.layout {
+  height: 100%;
+  width: 100%;
+  background-color: $col-primary;
+}
+.layout_content {
+  padding: 15rem 0 2rem;
+  color: $primary-text-color;
+}

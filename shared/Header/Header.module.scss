@@ -1,0 +1,177 @@
+@import '@/styles/imports';
+
+.header {
+  @include flex(space-between, center, nowrap);
+  padding: 2.7rem 6.5rem;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background-color: $col-primary;
+  transition: $all-transition;
+  z-index: 3;
+  border-bottom: 0.1rem solid #ededed;
+  a {
+    .header_logoContainer {
+      transition: $all-transition;
+    }
+  }
+  .header_nav {
+    min-width: 35%;
+    margin-right: 5.5rem;
+
+    .header_navList {
+      @include flex(space-between, center, nowrap);
+      padding: 0;
+      margin: 0;
+      .header_navLink {
+        padding: 1rem 2.5rem;
+        a {
+          font-family: $font-mono;
+          font-size: 1.8rem;
+          font-weight: 700;
+          transition: $all-transition;
+          color: $col-blue-100;
+        }
+        @include screenMax('tablet') {
+          @include flex(flex-end, center, nowrap);
+        }
+      }
+    }
+  }
+  @include screenMax('tablet') {
+    padding: 3rem 2.4rem;
+    .header_nav {
+      margin-right: 0;
+      .header_navList {
+        display: block;
+        padding: 0;
+        margin: 0;
+        .header_navLink {
+          padding: 2rem;
+          a {
+            font-family: $avenir-500;
+            font-size: 1.8rem;
+            font-weight: 500;
+            transition: $all-transition;
+            color: rgba(93, 94, 103, 1);
+          }
+        }
+      }
+    }
+  }
+  @include screenMax('tablet') {
+    .header_nav {
+      .header_navList {
+        .header_navLink {
+          a {
+            font-size: 2.4rem;
+            line-height: 3.6rem;
+          }
+        }
+      }
+    }
+  }
+}
+.header_wrapper,
+.header_wrapper__collapsed {
+  margin-left: 14rem;
+  flex-grow: 1;
+  transition: transform 0.3s ease-out;
+  @include flex(space-between, center);
+
+  @include screenMax('tablet') {
+    order: 3;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 10rem;
+    left: 0;
+    background-color: rgba($col-white, 0.9);
+    z-index: 10;
+    padding: 4rem 7%;
+    margin-left: 0;
+    transform: translateX(0);
+    @include flex(flex-start, flex-end, column);
+  }
+}
+
+.header_wrapper__collapsed {
+  @include screenMax('tablet') {
+    transform: translateX(101vw);
+  }
+}
+
+.header_scrolled {
+  padding: 1.4rem 4.4rem 1rem;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.7);
+  transition: $all-transition;
+  @include screenMax('tablet') {
+    padding: 2.4rem 1.4rem;
+  }
+}
+
+.header_hamburger,
+.header_hamburger__open {
+  display: none;
+  position: relative;
+  cursor: pointer;
+  height: fit-content;
+  background: transparent;
+  border: none;
+  width: 45px;
+
+  @include screenMax('tablet') {
+    order: 2;
+    margin-left: auto;
+    @include flex(center, flex-end, column nowrap);
+  }
+
+  &Bar {
+    width: 35px;
+    height: 2px;
+    background-color: #373737;
+    margin: 0.4rem 0;
+    width: 35px;
+    opacity: 0.8;
+    transition: all 0.3s cubic-bezier(0.455, 0.03, 0.515, 0.955);
+
+    &:nth-child(2) {
+      width: 30px;
+    }
+  }
+}
+
+.header_hamburger__open {
+  min-height: 2rem;
+  position: relative;
+
+  .header_hamburgerBar {
+    width: 20px;
+  }
+
+  .header_hamburgerBar:first-child {
+    margin-bottom: -1px;
+    transform: rotate(45deg);
+  }
+
+  .header_hamburgerBar:last-child {
+    margin-top: -1px;
+    transform: rotate(-45deg);
+  }
+}
+
+.button {
+  @include flex(flex-start, center);
+  .icon {
+    position: relative;
+    width: 3.2rem;
+    height: 3.2rem;
+    margin-right: 1.2rem;
+  }
+  p {
+    font-size: 2rem;
+    font-family: $font-mono;
+    color: $col-white;
+    font-weight: 700;
+  }
+}

@@ -1,6 +1,13 @@
-import '@/styles/globals.css'
+import '@/styles/index.scss'
 import type { AppProps } from 'next/app'
+import { Nprogress, Seo } from '@/shared'
 
 export default function App({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
+  return (
+    <>
+      <Seo />
+      <Nprogress />
+      <Component {...pageProps} />
+    </>
+  )
 }

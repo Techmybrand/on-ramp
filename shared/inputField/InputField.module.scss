@@ -1,0 +1,74 @@
+@import '@/styles/imports';
+
+.input {
+  width: 100%;
+  row-gap: 0.7rem;
+  // height: 100%;
+  @include flex(flex-start, flex-start, column);
+}
+
+.input_label {
+  font-size: 1.6rem;
+  line-height: 2.2rem;
+  color: $col-white;
+  font-family: $matter-900;
+  font-weight: 900;
+}
+
+.input_wrapper {
+  position: relative;
+  width: 100%;
+  height: 6.1rem;
+  padding: 1.8rem;
+  column-gap: 1rem;
+  background-color: rgba(17, 29, 46, 0.5);
+  border: 0.1rem solid rgba(19, 34, 54, 1);
+  border-radius: 0.4rem;
+  transition: all 0.1s ease-in;
+  @include flex(flex-start, center, row nowrap);
+  &:focus-within {
+    transition: all 0.3s linear;
+    border-color: rgba(19, 34, 54, 1);
+  }
+  @include screenMax('ssm-mobile') {
+    height: 5rem;
+    padding: 1rem 1.8rem;
+  }
+}
+
+.input_icon {
+  position: relative;
+  width: 2rem;
+  height: 2rem;
+  flex-shrink: 0;
+}
+
+.input_field {
+  all: unset;
+  flex-grow: 1;
+  height: 100%;
+  @extend %text-20;
+  font-family: $matter-900;
+  width: 12rem;
+  &::placeholder {
+    @extend %text-20;
+    font-family: $matter-900;
+    color: $col-text-secondary;
+  }
+}
+
+.input_text {
+  margin-bottom: 0.5rem;
+  p {
+    @extend %text-20;
+    font-family: $matter-900;
+    color: $col-white;
+  }
+}
+
+.icon {
+  position: relative;
+  width: 2.4rem;
+  height: 2.4rem;
+  cursor: pointer;
+}

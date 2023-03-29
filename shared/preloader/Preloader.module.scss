@@ -1,0 +1,120 @@
+@import '@/styles/imports';
+
+.preloader {
+  position: fixed;
+  background-color: rgba(255, 243, 216, 1);
+  z-index: 10;
+  height: 100vh;
+  width: 100%;
+  animation: animate-preloader 4s ease-out forwards;
+  animation-delay: 1s;
+  .logo {
+    position: fixed;
+    top: calc(100vh - 18rem);
+    left: 8.8rem;
+    animation: animate-logo 4s ease-out forwards;
+    animation-delay: 1s;
+  }
+  .line {
+    position: fixed;
+    right: 25%;
+    width: 3rem;
+    height: 100vh;
+    // background-color: white;
+    // animation: wave 1s linear infinite;
+  }
+
+  .counter {
+    position: fixed;
+    top: calc(100vh - 5rem);
+    left: 8.8rem;
+    animation: animate-counter 3.8s ease-out forwards;
+    animation-delay: 1s;
+    h1 {
+      font-size: 7.2rem;
+      font-family: $avenir-900;
+    }
+  }
+  @include screenMax('tablet') {
+    .logo {
+      left: 2.4rem;
+      animation-name: animate-tab-logo;
+    }
+    .counter {
+      left: 2.4rem;
+    }
+  }
+  @include screenMax('mobile') {
+    .logo {
+      animation-name: animate-mob-logo;
+      top: calc(100vh - 38rem);
+    }
+    .counter {
+      left: 2.4rem;
+      top: calc(100vh - 28rem);
+      animation-name: animate-mob-counter;
+    }
+  }
+}
+
+@keyframes animate-preloader {
+  from {
+    height: 100vh;
+  }
+  to {
+    height: 0;
+  }
+}
+@keyframes animate-logo {
+  from {
+    top: calc(100vh - 18rem);
+  }
+  to {
+    top: 3.5rem;
+  }
+}
+@keyframes animate-counter {
+  from {
+    top: calc(100vh - 5rem);
+  }
+  95% {
+    opacity: 1;
+    visibility: visible;
+  }
+  to {
+    top: 15rem;
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+@keyframes animate-tab-logo {
+  from {
+    top: calc(100vh - 18rem);
+  }
+  to {
+    top: 1.8rem;
+  }
+}
+@keyframes animate-mob-logo {
+  from {
+    top: calc(100vh - 38rem);
+  }
+  to {
+    top: 1.8rem;
+  }
+}
+@keyframes animate-mob-counter {
+  from {
+    top: calc(100vh - 28rem);
+  }
+  95% {
+    opacity: 1;
+    visibility: visible;
+  }
+  to {
+    top: 15rem;
+    opacity: 0;
+    visibility: hidden;
+  }
+}

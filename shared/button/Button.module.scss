@@ -1,0 +1,71 @@
+@import '@/styles/imports';
+
+// .gold-gradient {
+//   @extend %btn-gold-gradient;
+// }
+
+// .gold-100-outline {
+//   @extend %btn-gold-100-outline;
+// }
+
+// .gold-150-outline {
+//   @extend %btn-gold-150-outline;
+// }
+
+// .gold-200 {
+//   @extend %btn-gold-200;
+// }
+
+// .gold-200-outline {
+//   @extend %btn-gold-200-outline;
+// }
+
+// .gold-250 {
+//   @extend %btn-gold-250;
+// }
+
+// .gold-faded {
+//   @extend %btn-gold-faded;
+// }
+
+// .black-700 {
+//   @extend %btn-black-700;
+// }
+
+// .green-200 {
+//   @extend %btn-green-200;
+// }
+
+// .red-300 {
+//   @extend %btn-red-300;
+// }
+
+// .purple-200 {
+//   @extend %btn-purple-200;
+// }
+
+// .purple-300 {
+// 	@extend %btn-purple-300;
+// }
+
+// .purple-400 {
+// 	@extend %btn-purple-400;
+// }
+
+.primary {
+	@extend %btn-primary;
+}
+
+.transparent {
+	@extend %btn-transparent;
+}
+
+.button_icon {
+	position: relative;
+	width: 1.5rem;
+	height: 1.5rem;
+}
+
+.button {
+	-webkit-tap-highlight-color: transparent;
+}

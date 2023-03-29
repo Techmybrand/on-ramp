@@ -1,0 +1,58 @@
+%heading {
+  margin: 0.5rem 0;
+  font-family: $font-mono;
+  font-weight: 700;
+  color: $col-blue-100;
+}
+
+%title-80 {
+  @extend %heading;
+  line-height: 10.2rem;
+  font-size: 8rem;
+  @include screenMax('tablet') {
+    line-height: 6.9rem;
+    font-size: 5.4rem;
+  }
+  @include screenMax('mobile') {
+    line-height: 5.1rem;
+    font-size: 4rem;
+  }
+}
+
+%title-54 {
+  @extend %heading;
+  line-height: 6.9rem;
+  font-size: 5.4rem;
+  @include screenMax('tablet') {
+    line-height: 5.6rem;
+    font-size: 4.2rem;
+  }
+  @include screenMax('mobile') {
+    line-height: 4.2rem;
+    font-size: 3.2rem;
+  }
+}
+
+%title-48 {
+  @extend %heading;
+  line-height: 5.6rem;
+  font-size: 4.8rem;
+}
+
+%title-32 {
+  @extend %heading;
+  line-height: 4.2rem;
+  font-size: 3.2rem;
+}
+
+%title-24 {
+  @extend %heading;
+  line-height: 3.2rem;
+  font-size: 2.4rem;
+}
+
+%title-21 {
+  @extend %heading;
+  line-height: 3rem;
+  font-size: 2.1rem;
+}

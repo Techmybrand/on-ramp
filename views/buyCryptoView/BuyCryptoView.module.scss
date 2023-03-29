@@ -1,0 +1,5 @@
+@import '@/styles/imports';
+
+.section {
+  @include flex(center, center);
+}
