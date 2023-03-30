@@ -2,15 +2,20 @@ import { Currencies } from '@/types'
 
 export const currencies: Currencies[] = [
   {
-    symbol: 'ngn',
+    symbol: 'NGN',
     name: 'naira',
     icon: '/svgs/ngn.svg',
+  },
+  {
+    symbol: 'USD',
+    name: 'USD',
+    icon: '/svgs/dollar.svg',
   },
 ]
 
 export const tokens: Currencies[] = [
   {
-    symbol: 'eth',
+    symbol: 'Eth',
     name: 'ether',
     icon: '/svgs/eth.svg',
   },

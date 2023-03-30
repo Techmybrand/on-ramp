@@ -6,6 +6,7 @@ import { Logo, Button } from '@/shared'
 import styles from './Header.module.scss'
 import { scrollTo } from '@/utils'
 import Image from 'next/legacy/image'
+import ConnectWallet from '@/components/connectWallet/ConnectWallet'
 
 const Header = (): ReactElement => {
   const router = useRouter()
@@ -35,14 +36,7 @@ const Header = (): ReactElement => {
             })}
           </ul>
         </nav>
-        <a href="#" target="_blank" rel="noreferrer">
-          <Button buttonType="primary" className={styles.button}>
-            <div className={styles.icon}>
-              <Image src="/svgs/wallet-yellow.svg" layout="fill" alt="" />
-            </div>
-            <p>Connect Wallet</p>
-          </Button>
-        </a>
+        <ConnectWallet />
       </div>
       <div
         onClick={() => setCollapsed(!collapsed)}
