@@ -361,6 +361,7 @@ const BuyCryptoCard = () => {
           <Button
             buttonType="transparent"
             className={styles.button}
+            disabled={view === View.CONFIRM && isLoading}
             onClick={
               view === View.HOME ? handleHomeSubmit : view === View.DETAILS ? handleDetailsSubmit : handleFinalSubmit
             }
