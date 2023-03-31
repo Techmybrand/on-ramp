@@ -1,3 +1,3 @@
-import BuyCryptoCard from './buyCryptoCard/BuyCryptoCard'
+import BuyCryptoCard from './BuyCryptoCard'
 
 export { BuyCryptoCard }

@@ -1,0 +1,141 @@
+@import '@/styles/imports';
+
+.card {
+  width: 63.5rem;
+  border: 0.6rem solid $col-blue-100;
+  //   padding: 2.8rem 5rem;
+  position: relative;
+  background-color: $col-white;
+  .header {
+    padding: 2.8rem 5rem;
+    border-bottom: 0.1rem solid #f7f9df;
+    @include flex(flex-start, center);
+    .back_button {
+      position: relative;
+      width: 2rem;
+      height: 2rem;
+      margin-right: 2.5rem;
+      rotate: 90deg;
+      cursor: pointer;
+    }
+  }
+  .menu_container {
+    position: absolute;
+    top: 2.8rem;
+    right: 5rem;
+    .menu {
+      position: relative;
+      width: 3.2rem;
+      height: 3.2rem;
+      cursor: pointer;
+    }
+  }
+  .body {
+    padding: 2.8rem 5rem;
+  }
+  .title,
+  .text {
+    h1 {
+      @extend %title-24;
+      text-transform: capitalize;
+    }
+    h3 {
+      @extend %text-16;
+      font-family: $matter-500;
+      color: $primary-text-color;
+    }
+  }
+  .text {
+    h5 {
+      @extend %text-16;
+      font-family: $avenir-900;
+      color: #8c9708;
+      cursor: pointer;
+    }
+    p {
+      @extend %text-20;
+      font-family: $font-mono;
+      font-weight: 700;
+    }
+    span {
+      @extend %text-16;
+      font-family: $matter-500;
+    }
+  }
+  .paymentType_container {
+    margin: 3.2rem 0;
+    .label {
+      margin-bottom: 0.5rem;
+      p {
+        font-size: 1.6rem;
+        line-height: 2.2rem;
+        color: $primary-text-color;
+        font-family: $matter-500;
+        font-weight: 500;
+        cursor: default;
+      }
+    }
+  }
+  .details_container {
+    margin: 3.2rem 0;
+    width: 100%;
+  }
+  .divider {
+    width: 100%;
+    height: 0.1rem;
+    background-color: $col-divider;
+    margin: 1rem 0;
+  }
+  .swap_container {
+    width: 100%;
+    margin: 3.2rem 0;
+    display: grid;
+    place-content: center;
+    .swap_icon {
+      position: relative;
+      width: 5.8rem;
+      height: 5.8rem;
+      cursor: pointer;
+    }
+  }
+  .input_container {
+    margin-bottom: 3.2rem;
+  }
+  .center {
+    display: grid;
+    place-items: center;
+    .title {
+      h3 {
+        font-family: $font-mono;
+        @extend %title-24;
+        text-align: center;
+      }
+    }
+    .text {
+      max-width: 40.8rem;
+      p {
+        font-family: $matter-500;
+        @extend %text-16;
+        color: $col-text-secondary;
+        text-align: center;
+      }
+    }
+  }
+  .confirm_image {
+    position: relative;
+    width: 22rem;
+    height: 20rem;
+  }
+  .button {
+    width: 100%;
+    background-color: #cdee2d;
+    @include flex(center, center);
+    margin-top: 3.2rem;
+    .icon {
+      position: relative;
+      width: 2.4rem;
+      height: 2.4rem;
+      margin-left: 0.4rem;
+    }
+  }
+}

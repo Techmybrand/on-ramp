@@ -9,14 +9,14 @@ export const navLinks: NavLink[] = [
   {
     name: 'Buy Crypto',
     title: 'buy',
-    url: '/',
+    url: '/buy',
     external: false,
   },
 
   {
     name: 'Sell Crypto',
     title: 'sell',
-    url: '/',
+    url: '/sell',
     external: false,
   },
 

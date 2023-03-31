@@ -52,7 +52,7 @@ const InputField = ({
       <div className={styles.input_wrapper}>
         {!!icon && (
           <figure className={styles.input_icon}>
-            <Image src={icon} layout="fill" alt="" />
+            <Image src={icon} fill alt="" />
           </figure>
         )}
         <input
@@ -71,7 +71,7 @@ const InputField = ({
         />
         {password && (
           <div className={styles.icon} onClick={handleShowPassword}>
-            <Image src={inputType !== 'password' ? '/svgs/eye-close.svg' : '/svgs/eye.svg'} layout="fill" alt="" />
+            <Image src={inputType !== 'password' ? '/svgs/eye-close.svg' : '/svgs/eye.svg'} fill alt="" />
           </div>
         )}
       </div>

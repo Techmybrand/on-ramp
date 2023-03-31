@@ -50,7 +50,7 @@ const Modal = ({
                 close()
               }}
             >
-              <Image src={'/svgs/close.svg'} layout="fill" alt="" />
+              <Image src={'/svgs/close.svg'} fill alt="" />
             </div>
           )}
         </div>

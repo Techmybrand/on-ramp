@@ -9,3 +9,16 @@ export interface TokenInputValue {
   symbol: string
   amount: number | string
 }
+
+export interface IAuthInfo {
+  uuid: string
+  name: '';
+  email: string;
+  token: string;
+  kyc?: boolean;
+  wallet?: {
+    balance: number
+    address: string
+  };
+  // trades?:
+}
