@@ -6,8 +6,6 @@ export const GlobalContext = React.createContext<any>(null)
 export const GlobalProvider = ({ children }: any) => {
   const [connectorName, setConnectorName] = useState<string>('')
 
-
-
   return (
     <GlobalContext.Provider
       value={{

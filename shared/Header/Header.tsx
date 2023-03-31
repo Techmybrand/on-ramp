@@ -4,12 +4,9 @@ import React, { useState, useEffect, useRef, ReactElement } from 'react'
 import { useRouter } from 'next/router'
 import { Logo, Button } from '@/shared'
 import styles from './Header.module.scss'
-import { scrollTo } from '@/utils'
-import Image from 'next/legacy/image'
 import ConnectWallet from '@/components/connectWallet/ConnectWallet'
 
 const Header = (): ReactElement => {
-  const router = useRouter()
   const [collapsed, setCollapsed] = useState<boolean>(true)
   return (
     <header className={styles.header}>
@@ -29,7 +26,7 @@ const Header = (): ReactElement => {
                       {name}
                     </a>
                   ) : (
-                    <Link href="/">{name}</Link>
+                    <Link href={url}>{name}</Link>
                   )}
                 </li>
               )

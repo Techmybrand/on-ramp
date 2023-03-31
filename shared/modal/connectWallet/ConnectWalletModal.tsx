@@ -125,7 +125,7 @@ const WalletCard = ({ data, onClick }: CardProps) => {
   return (
     <div className={styles.card} onClick={onClick}>
       <div className={styles.icon}>
-        <Image src={data.icon} alt="" layout="fill" />
+        <Image src={data.icon} alt="" fill />
       </div>
       <div className={styles.text}>
         <p>{data.wallet}</p>

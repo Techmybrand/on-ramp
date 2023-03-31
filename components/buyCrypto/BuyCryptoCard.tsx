@@ -8,9 +8,10 @@ import Image from 'next/legacy/image'
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import styles from './BuyCryptoCard.module.scss'
 import isEmpty from 'lodash/isEmpty'
-import { FLW_PUBKEY, MIN_AMOUNT } from '@/config'
+import { FLW_PUBKEY, MAX_AMOUNT, MIN_AMOUNT } from '@/config'
 import { API } from '@/utils/axios'
 import { closePaymentModal, useFlutterwave } from 'flutterwave-react-v3'
+import getTokenUsdRate from '@/utils/getTokenUsdRate'
 
 enum View {
   HOME = 'home',
@@ -27,10 +28,10 @@ const BuyCryptoCard = () => {
   const ccIconRef: any = useRef<any>('')
   const [view, setView] = useState<View>(View.HOME)
   const [buttonText, setButtonText] = useState<string>('Continue')
-  const [title, setTitle] = useState<string>('Buy Ether')
+  const [title, setTitle] = useState<string>('Buy crypto')
   const [errorMsg, setErrorMsg] = useState<string>('')
   const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [paymentSuccessful, setPaymentSuccessful] = useState<boolean>(false)
+  const [paymentSuccessful, setPaymentSuccessful] = useState<string>('')
   const [ethValue, setEthValue] = useState<number>(0)
   const [walletAddress, setWalletAddress] = useState<string>('')
   const [name, setName] = useState<string>('')
@@ -46,13 +47,13 @@ const BuyCryptoCard = () => {
     processingFee: 0,
   })
   const [sellToken, setSellToken] = useState<TokenInputValue>({
-    symbol: 'NGN',
-    name: 'naira',
+    symbol: 'USD',
+    name: 'USD',
     amount: '',
   })
   const [buyToken, setBuyToken] = useState<TokenInputValue>({
-    symbol: 'eth',
-    name: 'ether',
+    symbol: 'RUSD',
+    name: 'Ramp USD',
     amount: '',
   })
 
@@ -60,7 +61,7 @@ const BuyCryptoCard = () => {
     public_key: FLW_PUBKEY,
     tx_ref: transactionRef,
     amount: +sellToken.amount,
-    currency: sellToken.symbol === 'USD' ? 'USD' : 'NGN',
+    currency: 'USD',
     payment_options: 'card,ussd',
     customer: {
       email,
@@ -86,7 +87,7 @@ const BuyCryptoCard = () => {
 
   useEffect(() => {
     if (view === View.HOME) {
-      setTitle('Buy Ether')
+      setTitle('Buy Crypto')
       setButtonText('Continue')
       return
     }
@@ -106,6 +107,11 @@ const BuyCryptoCard = () => {
     // validations
     if (!sellToken.amount || parseInt(String(sellToken.amount)) < MIN_AMOUNT) {
       setErrorMsg(`Amount cannot be less than ${MIN_AMOUNT}.`)
+      return;
+    }
+
+    if (sellToken.amount && parseInt(String(sellToken.amount)) > MAX_AMOUNT) {
+      setErrorMsg(`Amount cannot be more than ${MAX_AMOUNT}.`)
       return;
     }
 
@@ -139,23 +145,19 @@ const BuyCryptoCard = () => {
       setErrorMsg('')
       setIsLoading(true)
       const response = await API.post('/ramp/initiatePayment', {
-        currency: sellToken.symbol,
-        amount: +sellToken.amount,
+        currency: buyToken.symbol,
+        amount: +total,
         walletAddress,
         email,
         name
       })
 
-      // setIsLoading(false)
-
       if (response?.data) {
-        const { transactionRef: ref, amount } = response?.data?.result
+        const { transactionRef: ref } = response?.data?.result
         setTransactionRef(ref)
       }
     } catch (error: any) {
       if (error.response.data) {
-        console.log("error.response.data", error.response.data);
-
         setErrorMsg(error.response.data.error)
       } else {
         setErrorMsg(error.message)
@@ -167,32 +169,34 @@ const BuyCryptoCard = () => {
 
   useEffect(() => {
     if (transactionRef) {
-      console.log("called first time......");
-
       setTransactionRef('');
       handleFlutterPayment({
         callback: async (response) => {
           try {
-            // console.log(response, "called....callback func");
+            closePaymentModal(); // this will close the modal programmatically
+            setIsLoading(true);
             const resp = await API.post('/ramp/verifyPayment', {
               transactionId: String(response.transaction_id),
               transactionRef: response.tx_ref,
               flw_ref: response.flw_ref
             })
             if (resp?.data) {
-              console.log(resp?.data?.result);
-              setPaymentSuccessful(true)
-              setView(View.HOME)
+              setPaymentSuccessful(`Your ${sellToken.amount} ${sellToken.symbol} payment has been processed. TransactionHash: ${resp.data.result.receipt.transactionHash}`)
+            }else{
+              setPaymentSuccessful(`Your ${sellToken.amount} ${sellToken.symbol} payment has been received. Expect your funds in a few minutes`)
             }
+            setSellToken({...sellToken, amount: ''})
+            setEthValue(0)
+            setView(View.HOME)
           } catch (error: any) {
-            console.log('ERROR =>', error);
-            setErrorMsg(error.message)
+            if(error.response.data){
+              setErrorMsg(error.response.data.error || error.response.data.emeesage || 'request failed')
+            }else{
+              setErrorMsg(error.message)
+            }
           }
-          console.log("got herte....");
-
           setIsLoading(false)
           setTransactionRef('')
-          closePaymentModal() // this will close the modal programmatically
         },
         onClose: () => {
           setIsLoading(false)
@@ -205,21 +209,25 @@ const BuyCryptoCard = () => {
 
   useEffect(() => {
     if (sellToken.amount) {
-      const convertedAmount = +sellToken.amount / 750
-      setEthValue(convertedAmount / 1500)
+      const amount = +sellToken.amount //assumes naira
+      const convertedAmount = getTokenUsdRate(buyToken.symbol, amount);
+      const [fee, processingFee] = [convertedAmount * 0.01, convertedAmount * 0.02]
+      setEthValue(convertedAmount)
       setTransactionDetails({
-        amount: convertedAmount,
-        networkFee: convertedAmount * 0.01,
-        processingFee: convertedAmount * 0.02,
+        amount: amount,
+        networkFee: fee,
+        processingFee: processingFee,
       })
-      total = convertedAmount + convertedAmount * 0.01 + convertedAmount * 0.02
+      total = convertedAmount - (fee + processingFee)
+    }else{
+      setEthValue(0)
     }
-  }, [sellToken.amount])
+  }, [sellToken.amount, sellToken.symbol, buyToken.symbol])
 
   return (
     <div className={styles.wrapper}>
-      {paymentSuccessful && <div style={{ display: 'flex', justifyContent: 'center', background: '#D4EDD9', padding: 20, marginBottom: 20 }}>
-        <p style={{ textAlign: 'center', color: '#145724' }}> Your {sellToken.amount} {sellToken.symbol} payment has been received. Expect your funds in a few minutes</p>
+      {paymentSuccessful && <div style={{ display: 'flex', justifyContent: 'center', width: 'min-content', background: '#D4EDD9', padding: 20, marginBottom: 20 }}>
+        <p style={{ textAlign: 'center', color: '#145724' }}> {paymentSuccessful} </p>
       </div>
       }
       <div className={styles.card}>
@@ -249,6 +257,7 @@ const BuyCryptoCard = () => {
                 options={currencies}
                 label="I want to Spend"
                 value={sellToken}
+                usdAmount={+sellToken.amount}
                 setValue={setSellToken}
               />
               <div className={styles.swap_container}>
@@ -269,30 +278,6 @@ const BuyCryptoCard = () => {
                 <p>Choose Payment Method</p>
               </div>
             </div> */}
-              {sellToken.amount && (
-                <div className={styles.details_container}>
-                  <div className={styles.title}>
-                    <h3>Transaction Summary</h3>
-                  </div>
-                  <div className={styles.divider}></div>
-                  <DetailContainer title="Amount" value={transactionDetails.amount} prefix="$" />
-                  <DetailContainer
-                    title="Network Fee"
-                    description="dskhljahfsldkjbvkjdhdsjh"
-                    value={transactionDetails.networkFee}
-                    prefix="$"
-                  />
-                  <DetailContainer
-                    title="Processing Fee"
-                    description="dskhljahfsldkjbvkjdhdsjh"
-                    value={transactionDetails.processingFee}
-                    prefix="$"
-                  />
-                  <DetailContainer title="Estimated Processing Time" value={'8-10'} suffix=" mins" />
-                  <div className={styles.divider}></div>
-                  <DetailContainer title="total" value={total} prefix="$" />
-                </div>
-              )}
             </>
           )}
           {view === View.DETAILS && (
@@ -341,39 +326,40 @@ const BuyCryptoCard = () => {
                 </div>
                 <div className={styles.text}>
                   <p>
-                    Your payment will take 8-10 mins and {formatNumber(ethValue)} {buyToken.symbol} will be paid to{' '}
+                    Your payment will take 2-10 mins and {formatNumber(ethValue)} {buyToken.symbol} will be paid to{' '}
                     {truncateAddress(walletAddress)}{' '}
                   </p>
                 </div>
               </div>
-              <div className={styles.details_container}>
-                <div className={styles.title}>
-                  <h3>Transaction Summary</h3>
-                </div>
-                <div className={styles.divider}></div>
-                <DetailContainer title="Amount" value={transactionDetails.amount} prefix="$" />
-                <DetailContainer
-                  title="Network Fee"
-                  description="$0.24"
-                  value={transactionDetails.networkFee}
-                  prefix="$"
-                />
-                <DetailContainer
-                  title="Processing Fee"
-                  description="Free"
-                  value={transactionDetails.processingFee}
-                  prefix="$"
-                />
-                <DetailContainer title="Estimated Processing Time" value={'8-10'} suffix=" mins" />
-                <div className={styles.divider}></div>
-                <DetailContainer title="total" value={total} prefix="$" />
-              </div>
             </>
+          )}
+          {sellToken.amount && view != View.DETAILS && (
+            <div className={styles.details_container}>
+              <div className={styles.title}>
+                <h3>Transaction Summary</h3>
+              </div>
+              <div className={styles.divider}></div>
+              <DetailContainer title="Amount" value={transactionDetails.amount} prefix="$" />
+              <DetailContainer
+                title="Network Fee"
+                description="gas fee"
+                value={transactionDetails.networkFee}
+                suffix={buyToken.symbol}
+              />
+              <DetailContainer
+                title="Processing Fee"
+                description="processing fee"
+                value={transactionDetails.processingFee}
+                suffix={buyToken.symbol}
+              />
+              <DetailContainer title="Estimated Processing Time" value={'2-10'} suffix=" mins" />
+              <div className={styles.divider}></div>
+              <DetailContainer title="total" value={total} suffix={buyToken.symbol} />
+            </div>
           )}
           <Button
             buttonType="transparent"
             className={styles.button}
-            // disabled={!isLoading}
             onClick={
               view === View.HOME ? handleHomeSubmit : view === View.DETAILS ? handleDetailsSubmit : handleFinalSubmit
             }

@@ -15,6 +15,7 @@ interface Props {
   options: Currencies[]
   convertedValue?: number
   disabled?: boolean
+  usdAmount?: number
 }
 
 const TokenInputContainer = ({
@@ -26,12 +27,14 @@ const TokenInputContainer = ({
   setValue,
   options,
   convertedValue,
+  usdAmount,
   disabled = false,
 }: Props) => {
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [selectedOptionIndex, setSelectedOptionIndex] = useState<number>(0)
   const [searchTerm, setSearchTerm] = useState<string>('')
   const [tokenList, setTokenList] = useState<any[]>(options)
+  
   const searchResult = useCallback(
     (e: any) => {
       setSearchTerm(e.target.value)
@@ -47,7 +50,7 @@ const TokenInputContainer = ({
   }
   useEffect(() => {
     if (tokenList[selectedOptionIndex]) {
-      //   setValue!(tokenList[selectedOptionIndex].symbol)
+      setValue!({...value, name: tokenList[selectedOptionIndex].name, symbol: tokenList[selectedOptionIndex].symbol})
     }
   }, [selectedOptionIndex, setValue, tokenList])
 
@@ -88,12 +91,15 @@ const TokenInputContainer = ({
                 />
               )}
             </div>
-            <div className={styles.input_text}>
+            {
+              !disabled && <div className={styles.input_text}>
               <p>
                 {tokenList[selectedOptionIndex] ? tokenList[selectedOptionIndex].name : ''}{' '}
-                {value.amount && <span>(${formatLargeNum(Number(value.amount) / 750)})</span>}
+                {value.amount && <span>(${formatLargeNum(usdAmount)})</span>}
               </p>
             </div>
+            }
+            
           </div>
         </div>
         <div className={styles.container}>
@@ -119,7 +125,7 @@ const TokenInputContainer = ({
               <Image src="/svgs/drop-down.svg" layout="fill" alt="" />
             </div>
           </Button>
-          {isOpen && (
+          {isOpen && tokenList.length > 1 && (
             <Modal close={() => setIsOpen(false)}>
               <div className={styles.select_body}>
                 <div className={styles.input_container} onClick={(e: any) => e.stopPropagation()}>
