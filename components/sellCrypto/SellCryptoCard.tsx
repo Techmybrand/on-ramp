@@ -10,6 +10,7 @@ import styles from './SellCryptoCard.module.scss'
 import isEmpty from 'lodash/isEmpty'
 import { API } from '@/utils/axios'
 import getTokenUsdRate from '@/utils/getTokenUsdRate'
+import { toast } from 'react-toastify'
 
 enum View {
   HOME = 'home',
@@ -65,7 +66,7 @@ const SellCryptoCard = () => {
     }
     if (view === View.CONFIRM) {
       setButtonText('Pay Now')
-      setTitle('Confirm Purchase Amount')
+      setTitle('Confirm Sale Amount')
       return
     }
   }, [view])
@@ -126,14 +127,32 @@ const SellCryptoCard = () => {
       setEthValue(0)
     } catch (error: any) {
       if (error.response.data) {
-        setErrorMsg(error.response.data.error)
+        toast.error(error.response.data.message)
       } else {
-        setErrorMsg(error.message)
+        toast.error(error.message)
       }
       setIsLoading(false)
       setTransactionHash('')
     }
   }
+
+  useEffect(() => {
+    // this is a mock feature, should be implemented with sockets
+    if (transactionHash) {
+      const interval = setInterval(async () => {
+        const response = await API.get(`/ramp/checkWithdrawal/${transactionHash}`)
+        if (response.data) {
+          const { status, message } = response?.data?.result
+          if (status === 'COMPLETED') {
+            setTransactionHash('')
+            setPaymentSuccessful('')
+            toast.success(message)
+            clearInterval(interval)
+          }
+        }
+      }, 5000)
+    }
+  }, [transactionHash])
 
   useEffect(() => {
     if (sellToken.amount) {
@@ -228,7 +247,7 @@ const SellCryptoCard = () => {
                 </div>
                 <div className={styles.title}>
                   <h3>
-                    Buying {formatNumber(ethValue)} {buyToken.symbol} for {formatNumber(+sellToken.amount)} {sellToken.symbol}
+                    Selling {formatNumber(+sellToken.amount)} {sellToken.symbol} for {formatNumber(ethValue)} {buyToken.symbol}
                   </h3>
                 </div>
                 <div className={styles.text}>
@@ -269,7 +288,7 @@ const SellCryptoCard = () => {
               <Button
                 buttonType="transparent"
                 className={styles.button}
-                // disabled={!isLoading}
+                disabled={isLoading}
                 onClick={account ? handleFinalSubmit : null}
               >
                 {

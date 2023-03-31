@@ -12,6 +12,7 @@ import { FLW_PUBKEY, MAX_AMOUNT, MIN_AMOUNT } from '@/config'
 import { API } from '@/utils/axios'
 import { closePaymentModal, useFlutterwave } from 'flutterwave-react-v3'
 import getTokenUsdRate from '@/utils/getTokenUsdRate'
+import { toast } from 'react-toastify'
 
 enum View {
   HOME = 'home',
@@ -158,9 +159,9 @@ const BuyCryptoCard = () => {
       }
     } catch (error: any) {
       if (error.response.data) {
-        setErrorMsg(error.response.data.error)
+        toast.error(error.response.data.message)
       } else {
-        setErrorMsg(error.message)
+        toast.error(error.message)
       }
       setIsLoading(false)
       setTransactionRef('')
@@ -190,9 +191,9 @@ const BuyCryptoCard = () => {
             setView(View.HOME)
           } catch (error: any) {
             if(error.response.data){
-              setErrorMsg(error.response.data.error || error.response.data.emeesage || 'request failed')
+              toast.error(error.response.data.meesage || 'request failed')
             }else{
-              setErrorMsg(error.message)
+              toast.error(error.message)
             }
           }
           setIsLoading(false)

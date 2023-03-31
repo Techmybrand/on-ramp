@@ -4,6 +4,7 @@ import { Nprogress, Seo } from '@/shared'
 import Providers from '@/providers'
 import { useStore } from '@/store'
 import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function App({ Component, pageProps }: AppProps) {
   const store = useStore(pageProps.initialReduxState)
@@ -23,7 +24,7 @@ export default function App({ Component, pageProps }: AppProps) {
         pauseOnFocusLoss
         draggable
         pauseOnHover
-        theme="dark"
+        theme="light"
       />
     </Providers>
   )
