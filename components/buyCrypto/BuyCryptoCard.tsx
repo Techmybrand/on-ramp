@@ -182,7 +182,7 @@ const BuyCryptoCard = () => {
               flw_ref: response.flw_ref
             })
             if (resp?.data) {
-              setPaymentSuccessful(`Your ${sellToken.amount} ${sellToken.symbol} payment has been processed. TransactionHash: <a href="https://testnet.bscscan.com/tx/${resp.data.result.receipt.transactionHash}">${resp.data.result.receipt.transactionHash}</>`)
+              setPaymentSuccessful(`Your ${sellToken.amount} ${sellToken.symbol} payment has been processed. TransactionHash: ${resp.data.result.receipt.transactionHash}`)
             }else{
               setPaymentSuccessful(`Your ${sellToken.amount} ${sellToken.symbol} payment has been received. Expect your funds in a few minutes`)
             }
