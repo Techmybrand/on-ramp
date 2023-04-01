@@ -35,7 +35,7 @@ const BuyCryptoCard = () => {
   const [paymentSuccessful, setPaymentSuccessful] = useState<string>('')
   const [ethValue, setEthValue] = useState<number>(0)
   const [walletAddress, setWalletAddress] = useState<string>('')
-  const [name, setName] = useState<string>('')
+  const [name, setName] = useState<string>('John Doe')
   const [email, setEmail] = useState<string>('')
   const [transactionRef, setTransactionRef] = useState<string>('')
   const [transactionDetails, setTransactionDetails] = useState<{
@@ -182,7 +182,7 @@ const BuyCryptoCard = () => {
               flw_ref: response.flw_ref
             })
             if (resp?.data) {
-              setPaymentSuccessful(`Your ${sellToken.amount} ${sellToken.symbol} payment has been processed. TransactionHash: ${resp.data.result.receipt.transactionHash}`)
+              setPaymentSuccessful(`Your ${sellToken.amount} ${sellToken.symbol} payment has been processed. TransactionHash: <a href="https://testnet.bscscan.com/tx/${resp.data.result.receipt.transactionHash}">${resp.data.result.receipt.transactionHash}</>`)
             }else{
               setPaymentSuccessful(`Your ${sellToken.amount} ${sellToken.symbol} payment has been received. Expect your funds in a few minutes`)
             }
@@ -306,9 +306,9 @@ const BuyCryptoCard = () => {
                 ccIconRef={ccIconRef}
               />
             </div> */}
-              <div className={styles.input_container}>
+              {/* <div className={styles.input_container}>
                 <InputField type="name" label="Payee Name" placeholder="John Doe" onChange={(e: any) => setName(e.target.value)} icon="/svgs/user.svg" />
-              </div>
+              </div> */}
               <div className={styles.input_container}>
                 <InputField type="email" label="Email address" placeholder="name@domain.com" onChange={(e: any) => setEmail(e.target.value)} icon="/svgs/user.svg" />
               </div>
