@@ -140,7 +140,7 @@ const SellCryptoCard = () => {
     // this is a mock feature, should be implemented with sockets
     if (transactionHash) {
       const interval = setInterval(async () => {
-        const response = await API.get(`/ramp/checkWithdrawal/${transactionHash}`)
+        const response = await API.get(`/ramp/checkWithdrawal?transactionHash=${transactionHash}`)
         if (response.data) {
           const { status, message } = response?.data?.result
           if (status === 'COMPLETED') {
